@@ -35,9 +35,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.5</version>
-                <configuration>
-                    <argLine>-XX:+EnableDynamicAgentLoading</argLine>
-                </configuration>
             </plugin>
 
             <plugin>
@@ -46,6 +43,10 @@
                 <version>0.8.14</version>
                 <configuration>
                     <append>true</append>
+                    <excludes>
+                        <exclude>praktikum/Database*</exclude>
+                        <exclude>praktikum/Praktikum*</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>

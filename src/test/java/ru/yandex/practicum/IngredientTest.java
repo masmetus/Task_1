@@ -1,14 +1,11 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import praktikum.Ingredient;
 import praktikum.IngredientType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockitoExtension.class)
 public class IngredientTest {
 
     private Ingredient ingredient;

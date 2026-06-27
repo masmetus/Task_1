@@ -1,13 +1,10 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import praktikum.Bun;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(MockitoExtension.class)
 public class BunTest {
 
     private Bun bun;
@@ -24,7 +21,7 @@ public class BunTest {
     }
 
     @Test
-    public void shouldReturnBunPrise() {
+    public void shouldReturnBunPrice() {
         bun = new Bun("Булка вкусная", -5.54f);
 
         Float expected = -5.54f;
