@@ -21,7 +21,7 @@ public class IngredientTest {
     }
 
     @Test
-    public void shouldReturnBunName() {
+    public void shouldReturnIngredientName() {
         ingredient = new Ingredient(IngredientType.SAUCE, "Мясо человека", 4.45f);
 
         String expected = "Мясо человека";
@@ -31,7 +31,7 @@ public class IngredientTest {
     }
 
     @Test
-    public void shouldReturnBunPrise() {
+    public void shouldReturnIngredientPrise() {
         ingredient = new Ingredient(IngredientType.SAUCE, "Мясо человека", -4.45f);
 
         Float expected = -4.45f;

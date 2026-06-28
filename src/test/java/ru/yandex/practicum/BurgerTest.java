@@ -1,29 +1,40 @@
 package ru.yandex.practicum;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import praktikum.Bun;
 import praktikum.Burger;
 import praktikum.Ingredient;
+import praktikum.IngredientType;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static praktikum.IngredientType.*;
 
-
+@ExtendWith(MockitoExtension.class)
 public class BurgerTest {
 
-    private Burger burger;
+    @Mock
+    private Bun bunMock;
+
+    @Mock
+    private Ingredient sauceMock;
+
+    @Mock
+    private Ingredient fillingMock;
 
     @Test
     public void shouldReturnBurgerPriceWithBunAndIngredients() {
-        burger = new Burger();
+        Burger burger = new Burger();
 
-        Bun bun = new Bun("Каменная булка", 15f);
-        Ingredient sause = new Ingredient(SAUCE, "Табаско", 5f);
-        Ingredient filling = new Ingredient(FILLING, "Мясо тролля", 125f);
+        Mockito.when(bunMock.getPrice()).thenReturn(15f);
+        Mockito.when(sauceMock.getPrice()).thenReturn(5f);
+        Mockito.when(fillingMock.getPrice()).thenReturn(125f);
 
-        burger.setBuns(bun);
-        burger.addIngredient(sause);
-        burger.addIngredient(filling);
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
 
         Float expectedPrice = 160f;
         Float actual = burger.getPrice();
@@ -33,22 +44,29 @@ public class BurgerTest {
 
     @Test
     public void shouldReturnBurgerReceipt() {
-        burger = new Burger();
+        Burger burger = new Burger();
 
-        Bun bun = new Bun("Каменная булка", 15f);
-        Ingredient sause = new Ingredient(SAUCE, "Табаско", 5f);
-        Ingredient filling = new Ingredient(FILLING, "Мясо тролля", 125f);
+        Mockito.when(bunMock.getName()).thenReturn("Каменная булка");
+        Mockito.when(bunMock.getPrice()).thenReturn(15f);
 
-        burger.setBuns(bun);
-        burger.addIngredient(sause);
-        burger.addIngredient(filling);
+        Mockito.when(sauceMock.getType()).thenReturn(IngredientType.SAUCE);
+        Mockito.when(sauceMock.getName()).thenReturn("Табаско");
+        Mockito.when(sauceMock.getPrice()).thenReturn(5f);
+
+        Mockito.when(fillingMock.getType()).thenReturn(IngredientType.FILLING);
+        Mockito.when(fillingMock.getName()).thenReturn("Мясо тролля");
+        Mockito.when(fillingMock.getPrice()).thenReturn(125f);
+
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
 
         String expected = "(==== Каменная булка ====)\n"
                 + "= sauce Табаско =\n"
                 + "= filling Мясо тролля =\n"
                 + "(==== Каменная булка ====)\n"
                 + "\n"
-                + "Price: 160,000000\n";
+                + String.format("Price: %f\n", 160f);
 
 
         String actual = burger.getReceipt();
@@ -62,13 +80,13 @@ public class BurgerTest {
     void shouldDecreasePriceAfterRemovingIngredient() {
         Burger burger = new Burger();
 
-        Bun bun = new Bun("Булка из водорослей", 10f);
-        Ingredient sauce = new Ingredient(SAUCE, "Кисло-сладкий", 5f);
-        Ingredient filling = new Ingredient(FILLING, "Мясо жмыха", 20f);
+        Mockito.when(bunMock.getPrice()).thenReturn(10f);
+        Mockito.when(sauceMock.getPrice()).thenReturn(5f);
+        Mockito.when(fillingMock.getPrice()).thenReturn(20f);
 
-        burger.setBuns(bun);
-        burger.addIngredient(sauce);
-        burger.addIngredient(filling);
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
 
         float priceBefore = burger.getPrice();
 
@@ -77,20 +95,27 @@ public class BurgerTest {
         float priceAfter = burger.getPrice();
 
         assertNotEquals(priceBefore, priceAfter);
-        assertEquals(2 * 10f + 20f, priceAfter);
+        assertEquals(2 * 10f + 20f, priceAfter, "Цена после удаления неверна");
     }
 
     @Test
     void shouldChangeIngredientOrderInReceipt() {
         Burger burger = new Burger();
 
-        Bun bun = new Bun("Булка из водорослей", 10f);
-        Ingredient sauce = new Ingredient(SAUCE, "Кисло-сладкий", 5f);
-        Ingredient filling = new Ingredient(FILLING, "Мясо жмыха", 20f);
+        Mockito.when(bunMock.getName()).thenReturn("Булка из водорослей");
+        Mockito.when(bunMock.getPrice()).thenReturn(10f);
 
-        burger.setBuns(bun);
-        burger.addIngredient(sauce);
-        burger.addIngredient(filling);
+        Mockito.when(sauceMock.getType()).thenReturn(IngredientType.SAUCE);
+        Mockito.when(sauceMock.getName()).thenReturn("Кисло-сладкий");
+        Mockito.when(sauceMock.getPrice()).thenReturn(5f);
+
+        Mockito.when(fillingMock.getType()).thenReturn(IngredientType.FILLING);
+        Mockito.when(fillingMock.getName()).thenReturn("Мясо жмыха");
+        Mockito.when(fillingMock.getPrice()).thenReturn(20f);
+
+        burger.setBuns(bunMock);
+        burger.addIngredient(sauceMock);
+        burger.addIngredient(fillingMock);
 
         burger.moveIngredient(0, 1);
 
@@ -99,6 +124,6 @@ public class BurgerTest {
         int sauceIndex = receipt.indexOf("Кисло-сладкий");
         int fillingIndex = receipt.indexOf("Мясо жмыха");
 
-        assertTrue(fillingIndex < sauceIndex);
+        assertTrue(fillingIndex < sauceIndex, "Ингредиенты не поменялись местами");
     }
 }
